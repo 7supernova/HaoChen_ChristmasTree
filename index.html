@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/HaoChen_ChristmasTree/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>christmas-tree</title>
+    <style>
+      html, body {
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        height: 100%;
+        overflow: hidden; /* 防止滚动条出现 */
+      }
+    </style>
+    <script type="module" crossorigin src="/HaoChen_ChristmasTree/assets/index-CfjtRR1o.js"></script>
+    <link rel="stylesheet" crossorigin href="/HaoChen_ChristmasTree/assets/index-Dtn62Xmo.css">
+  </head>
+  <body>
+    <div id="root"></div>
+
+    <audio id="bg-music" src="/HaoChen_ChristmasTree/Everyday by Supernova.mp3" loop preload="auto"></audio>
+
+    <div id="audio-starter" style="
+        position: fixed; 
+        top: 0; left: 0; 
+        width: 100%; height: 100%; 
+        z-index: 9999; 
+        cursor: pointer; 
+        background: black; 
+        color: white; 
+        display: flex; 
+        justify-content: center; 
+        align-items: center;
+        font-family: sans-serif;
+        font-size: 20px;
+        opacity: 1; /* 确保完全覆盖 */
+    ">
+        点击任意位置开始 (Click anywhere to start)
+    </div>
+
+   <script>
+        // 确保在页面加载完成后再执行脚本
+        document.addEventListener('DOMContentLoaded', () => {
+            const audio = document.getElementById('bg-music');
+            const controlButton = document.getElementById('music-control');
+            
+            // 初始设置图标为播放状态（因为音乐是暂停的）
+            controlButton.innerText = '▶️';
+
+            // 监听按钮点击事件
+            controlButton.addEventListener('click', () => {
+                // 检查音频是否暂停
+                if (audio.paused) {
+                    // 尝试播放。Promise API 保证了在用户交互后才进行播放
+                    audio.play().then(() => {
+                        controlButton.innerText = '⏸️'; // 播放成功
+                    }).catch(error => {
+                        console.error("Audio playback failed:", error);
+                        alert("无法播放音乐，请检查浏览器设置或音乐文件。");
+                        controlButton.innerText = '❌'; // 播放失败
+                    });
+                } else {
+                    // 暂停
+                    audio.pause();
+                    controlButton.innerText = '▶️';
+                }
+            });
+
+            // 额外增强：监听音频状态变化，同步按钮图标
+            audio.onplay = () => { controlButton.innerText = '⏸️'; };
+            audio.onpause = () => { controlButton.innerText = '▶️'; };
+            
+            // 尝试触发加载，在某些旧浏览器中有帮助
+            audio.load();
+        });
+    </script>
+
+    
+  </body>
+</html>
